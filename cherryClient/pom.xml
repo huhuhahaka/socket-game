@@ -11,7 +11,7 @@
     <groupId>com.fruits</groupId>
     <artifactId>cherry</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>cherry</name>
+    <name>cherryClient</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -53,7 +53,6 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.58</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
