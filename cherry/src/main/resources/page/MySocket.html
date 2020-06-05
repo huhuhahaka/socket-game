@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	
+	
+	房间号: <input type="text" id="RoomNo"/>  <input type="button" value="确认房间号" onclick="createRoom()"/>
+	<br>
+	
+	题目：<h1 id="problem"></h1>  
+	<br>
+	结果：<h1 id="result"></h1>  
+	<br>
+		
+	答案: <input type="text" id="answer"/> <input type="button" value="确认答案" onclick="submitAnswer()"/>
+	 
+	
+	
+    <script type="text/javascript">
+	var ws;
+	var RoomNo;
+        function createRoom()
+        {
+            if ("WebSocket" in window)
+            {
+                alert("您的浏览器支持 WebSocket!");
+				
+				RoomNo = document.getElementById("RoomNo").value;
+
+				if(RoomNo == ""){
+					alert("请输入房间号");
+					return;
+				}
+	
+                // 打开一个 web socket
+                ws = new WebSocket("ws://localhost:8085/websocket/"+RoomNo);
+
+                ws.onopen = function()
+                {
+					alert("建立连接");
+                    // Web Socket 已连接上，使用 send() 方法发送数据
+                    //ws.send("ready");
+                    console.log("数据发送中...");
+                };
+
+                ws.onmessage = function (evt)
+                {
+                    var message = evt.data;
+					if(message.indexOf("答案") != -1){
+						document.getElementById("result").innerHTML = message;
+					}else {
+						document.getElementById("problem").innerHTML = message;
+					}
+					
+					
+                    console.log("数据已接收... ");
+                };
+
+                ws.onclose = function()
+                {
+                    // 关闭 websocket
+                    console.log("连接已关闭...");
+                };
+            }
+
+            else
+            {
+                // 浏览器不支持 WebSocket
+                alert("您的浏览器不支持 WebSocket!");
+            }
+        }
+		
+		function submitAnswer(){
+			var answer = document.getElementById("answer").value;
+			ws.send(RoomNo+"---"+answer);
+		}
+		
+    </script>
+
+</head>
+<body>
+
+</body>
+</html>
